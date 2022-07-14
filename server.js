@@ -5,6 +5,7 @@ const qs = require('qs');
 
 
 handlers = {};
+router = {}
 
 let mimeTypes={
     'jpg' : 'images/jpg',
@@ -25,7 +26,8 @@ const server = http.createServer(async(req, res)=>{
         res.writeHead(200, {'Content-Type': extension});
         fs.createReadStream(__dirname  + req.url).pipe(res)
     } else{
-        
+        let chosenHandler = (typeof (router[urlPath]) !== 'undefined') ? router[urlPath] : handlers.notfound;
+        chosenHandler(req, res);
     }
 
 })
