@@ -8,7 +8,8 @@ class Database{
             'host': 'localhost',
             'user': 'root',
             'password' : '',
-            'database' : ''
+            'database' : 'shopping_web',
+            'charset': 'utf8_general_ci'
         })
     }
 }

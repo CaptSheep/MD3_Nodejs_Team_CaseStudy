@@ -33,3 +33,7 @@ const server = http.createServer(async(req, res)=>{
 server.listen(8081, 'localhost', ()=>{
     console.log("Server is running on http://localhost:8081");
 })
+
+const router = {
+    '/login' : handlers.login
+}
