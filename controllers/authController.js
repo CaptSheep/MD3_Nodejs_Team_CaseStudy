@@ -29,7 +29,7 @@ class AuthController {
         const user = qs.parse(data);
         let admin = '';
 
-        let result = await this.userModel.checkAccount(user.email, user.password)
+        let result = await this.userModel.checkAccount(user.customerEmail, user.customerPassword)
         result = JSON.parse(JSON.stringify(result))
         console.log(result);
         if (result.length > 0) {

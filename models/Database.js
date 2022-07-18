@@ -3,16 +3,15 @@ const mysql = require('mysql')
 class Database{
     constructor() {
     }
-         connect(){
+        static connect(){
         return mysql.createConnection({
-            'host': 'localhost',
+            'host': '127.0.0.1',
             'user': 'root',
+            'port': '3306',
             'password' : '1MasterChef*',
             'database' : 'shopping_web',
-            'charset': 'utf8_general_ci'
         })
     }
 }
-
 
 module.exports = Database;
