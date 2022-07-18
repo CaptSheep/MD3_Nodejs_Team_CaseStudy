@@ -14,6 +14,15 @@ handlers.login = (req,res)=>{
         authController.login(req,res)
     }
 }
+handlers.notfound = (req, res)=>{
+    fs.readFile('./views/auth/notfound.html', 'utf-8', (err, data)=>{
+        if(err)
+            console.log(err);
+        res.writeHead(200, 'Success', {'Content-type':'text/html'});
+        res.write(data);
+        res.end();
+    })
+}
 
 let mimeTypes={
     'jpg' : 'images/jpg',
