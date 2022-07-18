@@ -3,7 +3,7 @@ const mysql = require('mysql')
 class Database{
     constructor() {
     }
-    static connect(){
+        connect(){
         return mysql.createConnection({
             'host': 'localhost',
             'user': 'root',

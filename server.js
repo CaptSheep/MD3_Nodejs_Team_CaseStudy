@@ -2,9 +2,18 @@ const http = require('http');
 const url = require('url');
 const fs = require('fs')
 const qs = require('qs');
-
+const AuthController = require('./controllers/authController')
 
 handlers = {};
+let authController = new AuthController()
+handlers.login = (req,res)=>{
+    if(req.method === 'GET'){
+        authController.showForm(req,res,'./views/auth/login.html')
+    }
+    else{
+        authController.login(req,res)
+    }
+}
 
 let mimeTypes={
     'jpg' : 'images/jpg',
@@ -25,6 +34,8 @@ const server = http.createServer(async(req, res)=>{
         res.writeHead(200, {'Content-Type': extension});
         fs.createReadStream(__dirname  + req.url).pipe(res)
     } else{
+        let chosenHandler = (typeof (router[urlPath]) !== 'undefined') ? router[urlPath] : handlers.notfound;
+        chosenHandler(req, res);
         
     }
 

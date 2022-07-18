@@ -1,6 +1,6 @@
 const fs = require('fs')
 const qs = require('qs')
-const User = require("../model/user")
+const User = require('../models/user')
 const cookie = require('cookie')
 
 
@@ -74,3 +74,4 @@ class AuthController {
 
     }
 }
+module.exports = AuthController
