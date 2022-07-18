@@ -3,11 +3,11 @@ const mysql = require('mysql')
 class Database{
     constructor() {
     }
-        connect(){
+         connect(){
         return mysql.createConnection({
             'host': 'localhost',
             'user': 'root',
-            'password' : '',
+            'password' : '1MasterChef*',
             'database' : 'shopping_web',
             'charset': 'utf8_general_ci'
         })

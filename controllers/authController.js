@@ -62,7 +62,8 @@ class AuthController {
                 }
             })
             if (!admin) {
-                res.writeHead(301, { Location: '/home' });
+                res.writeHead(301, { Location: '/login' });
+                console.log('success');
                 return res.end();
             }
 
