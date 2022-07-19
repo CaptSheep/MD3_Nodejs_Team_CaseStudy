@@ -15,8 +15,8 @@ handlers.login = (req,res)=>{
     }
 }
 handlers.home = (req,res)=>{
-    if(req.method === ' GET'){
-        authController.showForm(req,res ,'./views/auth/home.html')
+    if(req.method === 'GET'){
+        authController.showForm(req,res,'./views/auth/home.html')
     }
 }
 handlers.notfound = (req, res)=>{
@@ -61,5 +61,5 @@ server.listen(8081, 'localhost', ()=>{
 
 const router = {
     '/login' : handlers.login,
-    '/home' : handlers.home
+    '/' : handlers.home
 }

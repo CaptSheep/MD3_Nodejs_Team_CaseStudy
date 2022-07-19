@@ -58,12 +58,12 @@ class AuthController {
                 if (item.roleId === 1) {
                     admin = true;
                     console.log(123);
-                    res.writeHead(301, { Location: '/login' });
+                    res.writeHead(301, { Location: '/' });
                     return res.end();
                 }
             })
             if (!admin) {
-                res.writeHead(301, { Location: '/login' });
+                res.writeHead(301, { Location: '/home' });
                 console.log('success');
                 return res.end();
             }
