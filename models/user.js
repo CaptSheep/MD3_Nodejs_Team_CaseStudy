@@ -18,7 +18,7 @@ module.exports = class User {
     }
     createAccount(data) {
         return new Promise((resolve, reject) => {
-            let sql = `INSERT INTO Customer (customerId, customerUserName, password, address, roleId,image)  VALUES('${data.name}','${data.email}','${data.password}','${data.address}',${data.roleId},'${data.image}')`
+            let sql = `INSERT INTO Customer (customerId, customerUserName, customerPassword, customerName, customerPhone,customerEmail,customerAddress)  VALUES('${data.customerId}','${data.customerUserName}','${data.customerPassword}','${data.customerName}',${data.customerPhone},'${data.customerEmail}','${data.customerAddress}')`
             this.conn.query(sql, (err, data) => {
                 if (err) {
                     reject(err);
