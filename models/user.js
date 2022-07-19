@@ -16,4 +16,16 @@ module.exports = class User {
             })
         })
     }
+    createAccount(data) {
+        return new Promise((resolve, reject) => {
+            let sql = `INSERT INTO Customer (customerId, customerUserName, password, address, roleId,image)  VALUES('${data.name}','${data.email}','${data.password}','${data.address}',${data.roleId},'${data.image}')`
+            this.conn.query(sql, (err, data) => {
+                if (err) {
+                    reject(err);
+                }
+                resolve(data);
+            })
+
+        })
+    }
 }

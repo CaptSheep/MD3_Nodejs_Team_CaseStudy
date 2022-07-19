@@ -29,10 +29,6 @@ handlers.notfound = (req, res)=>{
         res.end();
     })
 }
-
-router = {}
-
-
 let mimeTypes={
     'jpg' : 'images/jpg',
     'png' : 'images/png',
