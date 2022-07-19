@@ -5,6 +5,7 @@ const qs = require('qs');
 const AuthController = require('./controllers/authController')
 
 handlers = {};
+
 let authController = new AuthController()
 handlers.login = (req,res)=>{
     if(req.method === 'GET'){
@@ -29,6 +30,9 @@ handlers.notfound = (req, res)=>{
     })
 }
 
+router = {}
+
+
 let mimeTypes={
     'jpg' : 'images/jpg',
     'png' : 'images/png',
@@ -50,7 +54,6 @@ const server = http.createServer(async(req, res)=>{
     } else{
         let chosenHandler = (typeof (router[urlPath]) !== 'undefined') ? router[urlPath] : handlers.notfound;
         chosenHandler(req, res);
-        
     }
 
 })
