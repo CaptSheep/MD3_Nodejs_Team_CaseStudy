@@ -2,10 +2,36 @@ const http = require('http');
 const url = require('url');
 const fs = require('fs')
 const qs = require('qs');
-
+const AuthController = require('./controllers/authController')
 
 handlers = {};
+
+let authController = new AuthController()
+handlers.login = (req,res)=>{
+    if(req.method === 'GET'){
+        authController.showForm(req,res,'./views/auth/login.html')
+    }
+    else{
+        authController.login(req,res)
+    }
+}
+handlers.home = (req,res)=>{
+    if(req.method === 'GET'){
+        authController.showForm(req,res,'./views/auth/home.html')
+    }
+}
+handlers.notfound = (req, res)=>{
+    fs.readFile('./views/auth/notfound.html', 'utf-8', (err, data)=>{
+        if(err)
+            console.log(err);
+        res.writeHead(200, 'Success', {'Content-type':'text/html'});
+        res.write(data);
+        res.end();
+    })
+}
+
 router = {}
+
 
 let mimeTypes={
     'jpg' : 'images/jpg',
@@ -35,3 +61,8 @@ const server = http.createServer(async(req, res)=>{
 server.listen(8081, 'localhost', ()=>{
     console.log("Server is running on http://localhost:8081");
 })
+
+const router = {
+    '/login' : handlers.login,
+    '/' : handlers.home
+}

@@ -1,13 +1,14 @@
 {
-  "name": "CaseModule3",
+  "name": "casemodule3",
   "version": "1.0.0",
   "dependencies": {
     "cookie": "^0.5.0",
     "mysql": "^2.18.1",
-    "qs": "^6.10.5"
+    "nodemon": "^2.0.19",
+    "qs": "^6.11.0"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "nodemon server.js"
   },
   "devDependencies": {
     "formidable": "^2.0.1"
