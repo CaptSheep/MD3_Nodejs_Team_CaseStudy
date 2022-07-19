@@ -29,7 +29,7 @@ class AuthController {
         const user = qs.parse(data);
         let admin = '';
 
-        let result = await this.userModel.checkAccount(user.customerEmail, user.customerPassword)
+        let result = await this.userModel.checkAccount(user.email, user.password)
         result = JSON.parse(JSON.stringify(result))
         console.log(result);
         if (result.length > 0) {
@@ -55,9 +55,10 @@ class AuthController {
             res.setHeader('set-cookie', cookie.serialize('cookie-app', JSON.stringify(cookieLogin)));
 
             result.forEach(item => {
-                if (item.roleId === 2) {
+                if (item.roleId === 1) {
                     admin = true;
-                    res.writeHead(301, { Location: '/admin' });
+                    console.log(123);
+                    res.writeHead(301, { Location: '/login' });
                     return res.end();
                 }
             })
