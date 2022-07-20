@@ -2,10 +2,27 @@ const http = require('http');
 const url = require('url');
 const fs = require('fs')
 const qs = require('qs');
+const AuthController = require('./controllers/authController')
 const ProductController = require('./controllers/ProductController');
 let productController = new ProductController();
 
 handlers = {};
+
+let authController = new AuthController()
+handlers.login = (req,res)=>{
+    if(req.method === 'GET'){
+        authController.showForm(req,res,'./views/auth/login.html')
+    }
+    else{
+        authController.login(req,res)
+    }
+}
+handlers.home = (req,res)=>{
+    if(req.method === 'GET'){
+        authController.showForm(req,res,'./views/auth/home.html')
+    }
+}
+
 handlers.products = (req, res)=>{
     productController.showAllProduct(req, res);
 };
@@ -40,7 +57,9 @@ router = {
     '/product/update' : handlers.product_update,
     '/product/delete' : handlers.product_delete,
     '/product/image/update': handlers.image_update,
-    '/product/create': handlers.product_create
+    '/product/create': handlers.product_create,
+    '/login' : handlers.login,
+    '/' : handlers.home
 }
 
 let mimeTypes={
