@@ -2,10 +2,46 @@ const http = require('http');
 const url = require('url');
 const fs = require('fs')
 const qs = require('qs');
-
+const ProductController = require('./controllers/ProductController');
+let productController = new ProductController();
 
 handlers = {};
-router = {}
+handlers.products = (req, res)=>{
+    productController.showAllProduct(req, res);
+};
+handlers.product_update = (req, res)=>{
+    let queryUrl = url.parse(req.url).query;
+    let id = qs.parse(queryUrl).id;
+    productController.updateProduct(req, res, id);
+};
+handlers.product_delete = (req, res)=>{
+    let queryUrl = url.parse(req.url).query;
+    let id = qs.parse(queryUrl).id;
+};
+handlers.image_update = (req, res)=>{
+    let queryUrl = url.parse(req.url).query;
+    let id = qs.parse(queryUrl).id;
+    productController.updateImageProduct(req, res, id);
+}
+handlers.product_create = (req, res)=>{
+    productController.createProduct(req, res);
+}
+handlers.notfound = (req, res)=>{
+    fs.readFile('./views/notfound.html', 'utf-8', (err, data)=>{
+        if(err)
+            console.log(err);
+        res.writeHead(200, 'Success', {'Content-type':'text/html'});
+        res.write(data);
+        res.end();
+    })
+};
+router = {
+    '/product' : handlers.products,
+    '/product/update' : handlers.product_update,
+    '/product/delete' : handlers.product_delete,
+    '/product/image/update': handlers.image_update,
+    '/product/create': handlers.product_create
+}
 
 let mimeTypes={
     'jpg' : 'images/jpg',

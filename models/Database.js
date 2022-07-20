@@ -7,8 +7,8 @@ class Database{
         return mysql.createConnection({
             'host': 'localhost',
             'user': 'root',
-            'password' : '',
-            'database' : ''
+            'password' : 'shmily',
+            'database' : 'ClothingSalesManager'
         })
     }
 }
