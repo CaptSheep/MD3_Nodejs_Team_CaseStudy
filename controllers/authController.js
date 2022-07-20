@@ -69,7 +69,7 @@ class AuthController {
             }
 
         } else {
-            res.writeHead(301, { Location: '/' });
+            res.writeHead(301, { Location: '/login' });
             return res.end();
         }
 
