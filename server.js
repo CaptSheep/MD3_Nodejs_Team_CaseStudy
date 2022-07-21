@@ -3,6 +3,8 @@ const url = require('url');
 const fs = require('fs')
 const qs = require('qs');
 const AuthController = require('./controllers/authController')
+const ProductController = require('./controllers/ProductController');
+let productController = new ProductController();
 
 handlers = {};
 
@@ -28,15 +30,46 @@ handlers.home = (req,res)=>{
         authController.showForm(req,res,'./views/auth/home.html')
     }
 }
+
+handlers.products = (req, res)=>{
+    productController.showAllProduct(req, res);
+};
+handlers.product_update = (req, res)=>{
+    let queryUrl = url.parse(req.url).query;
+    let id = qs.parse(queryUrl).id;
+    productController.updateProduct(req, res, id);
+};
+handlers.product_delete = (req, res)=>{
+    let queryUrl = url.parse(req.url).query;
+    let id = qs.parse(queryUrl).id;
+};
+handlers.image_update = (req, res)=>{
+    let queryUrl = url.parse(req.url).query;
+    let id = qs.parse(queryUrl).id;
+    productController.updateImageProduct(req, res, id);
+}
+handlers.product_create = (req, res)=>{
+    productController.createProduct(req, res);
+}
 handlers.notfound = (req, res)=>{
-    fs.readFile('./views/auth/notfound.html', 'utf-8', (err, data)=>{
+    fs.readFile('./views/notfound.html', 'utf-8', (err, data)=>{
         if(err)
             console.log(err);
         res.writeHead(200, 'Success', {'Content-type':'text/html'});
         res.write(data);
         res.end();
     })
+};
+router = {
+    '/product' : handlers.products,
+    '/product/update' : handlers.product_update,
+    '/product/delete' : handlers.product_delete,
+    '/product/image/update': handlers.image_update,
+    '/product/create': handlers.product_create,
+    '/login' : handlers.login,
+    '/' : handlers.home
 }
+
 let mimeTypes={
     'jpg' : 'images/jpg',
     'png' : 'images/png',
@@ -66,8 +99,10 @@ server.listen(8081, 'localhost', ()=>{
     console.log("Server is running on http://localhost:8081");
 })
 
+
 const router = {
     '/login' : handlers.login,
     '/' : handlers.home,
     '/register': handlers.register,
 }
+
