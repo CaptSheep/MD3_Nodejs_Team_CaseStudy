@@ -54,26 +54,36 @@ class AuthController {
             let admin = false;
             res.setHeader('set-cookie', cookie.serialize('cookie-app', JSON.stringify(cookieLogin)));
 
-            result.forEach(item => {
+            result.forEach(item=> {
                 if (item.roleId === 1) {
                     admin = true;
-                    console.log(123);
                     res.writeHead(301, { Location: '/' });
                     return res.end();
                 }
             })
             if (!admin) {
                 res.writeHead(301, { Location: '/home' });
-                console.log('success');
                 return res.end();
             }
 
         } else {
-            res.writeHead(301, { Location: '/' });
+            res.writeHead(301, { Location: '/login' });
             return res.end();
         }
 
 
+    }
+     async register(req, res) {
+        let buffer = [];
+        for await (const chunk of req) {
+            buffer.push(chunk);
+        }
+        const data = Buffer.concat(buffer).toString();
+        const user = qs.parse(data);
+        this.userModel.createAccount(user).then(result => {
+            res.writeHead(301, { Location: '/login' });
+            res.end();
+        });
     }
 }
 module.exports = AuthController
