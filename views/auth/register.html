@@ -197,31 +197,39 @@
 					<div class=" main-content-area">
 						<div class="wrap-login-item ">
 							<div class="register-form form-item ">
-								<form class="form-stl" action="#" name="frm-login" method="get" >
+								<form class="form-stl" action="/register" name="frm-login" method="post" >
 									<fieldset class="wrap-title">
 										<h3 class="form-title">Create an account</h3>
 										<h4 class="form-subtitle">Personal infomation</h4>
 									</fieldset>									
 									<fieldset class="wrap-input">
-										<label for="frm-reg-lname">Name*</label>
-										<input type="text" id="frm-reg-lname" name="reg-lname" placeholder="Last name*">
+										<label for="frm-reg-lname">User Name*</label>
+										<input type="text" id="frm-reg-lname" name="customerUserName" placeholder="User Name*">
 									</fieldset>
 									<fieldset class="wrap-input">
-										<label for="frm-reg-email">Email Address*</label>
-										<input type="email" id="frm-reg-email" name="reg-email" placeholder="Email address">
+										<label for="frm-reg-email">Password*</label>
+										<input type="password" id="frm-reg-email" name="customerPassword" placeholder="********">
+									</fieldset><fieldset class="wrap-input">
+										<label for="frm-reg-email">Full Name *</label>
+										<input type="text" id="frm-reg-email" name="customerName" placeholder="Full Name*">
+									</fieldset><fieldset class="wrap-input">
+										<label for="frm-reg-email">Phone Number*</label>
+										<input type="text" id="frm-reg-email" name="customerPhone" placeholder="Phone Number*">
+									</fieldset>
+									<fieldset class="wrap-input">
+										<label for="frm-reg-email">Email*</label>
+										<input type="text" id="frm-reg-email" name="customerEmail" placeholder="Email*">
+									</fieldset>
+									<fieldset class="wrap-input">
+										<label for="frm-reg-email">Address*</label>
+										<input type="text" id="frm-reg-email" name="customerAddress" placeholder="Address*">
 									</fieldset>
 									<fieldset class="wrap-functions ">
 										<label class="remember-field">
 											<input name="newletter" id="new-letter" value="forever" type="checkbox"><span>Sign Up for Newsletter</span>
 										</label>
 									</fieldset>
-									<fieldset class="wrap-title">
-										<h3 class="form-title">Login Information</h3>
-									</fieldset>
-									<fieldset class="wrap-input item-width-in-half left-item ">
-										<label for="frm-reg-pass">Password *</label>
-										<input type="text" id="frm-reg-pass" name="reg-pass" placeholder="Password">
-									</fieldset>
+									
 									<!-- <fieldset class="wrap-input item-width-in-half ">
 										<label for="frm-reg-cfpass">Confirm Password *</label>
 										<input type="text" id="frm-reg-cfpass" name="reg-cfpass" placeholder="Confirm Password">
