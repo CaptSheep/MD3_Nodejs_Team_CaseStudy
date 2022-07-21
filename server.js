@@ -4,7 +4,9 @@ const fs = require('fs')
 const qs = require('qs');
 const AuthController = require('./controllers/authController')
 const ProductController = require('./controllers/ProductController');
+const CategoryController = require("./controllers/CategoryController");
 let productController = new ProductController();
+let categoryController = new CategoryController();
 
 handlers = {};
 
@@ -60,6 +62,22 @@ handlers.notfound = (req, res)=>{
         res.end();
     })
 };
+handlers.category = (req, res)=>{
+    categoryController.showAllCategory(req, res);
+}
+handlers.category_update = (req, res)=>{
+    let queryUrl = url.parse(req.url).query;
+    let id = qs.parse(queryUrl).id;
+    categoryController.updateCategory(req, res, id);
+}
+handlers.category_create = (req, res)=>{
+    let queryUrl = url.parse(req.url).query;
+    let id = qs.parse(queryUrl).id;
+    categoryController.createCategory(req, res);
+}
+handlers.search = (req, res)=>{
+    productController.searchProduct(req, res);
+}
 router = {
     '/product' : handlers.products,
     '/product/update' : handlers.product_update,
@@ -67,7 +85,11 @@ router = {
     '/product/image/update': handlers.image_update,
     '/product/create': handlers.product_create,
     '/login' : handlers.login,
-    '/' : handlers.home
+    '/' : handlers.home,
+    '/category' : handlers.category,
+    '/category/update' : handlers.category_update,
+    '/category/create' : handlers.category_create,
+    '/product/search' : handlers.search
 }
 
 let mimeTypes={

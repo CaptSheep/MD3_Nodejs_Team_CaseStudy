@@ -93,114 +93,63 @@
 
         <div class="content">
             <div class="row">
-                <div class="col-md-12">
-                    <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                         aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
+                <div class="col-md-12"> <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
 
-                                <div class="modal-header">
-                                    <h5>Update product</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form action="/product/create" method="POST" enctype="multipart/form-data">
-                                        <div class="form-group">
-                                            <label for="name">Product Name</label>
-                                            <input type="text" name="productName" class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="imageLink">Image</label>
-                                            <input type="file" name="imageLink" class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="category">Category Name</label>
-                                            {htmlcategories}
-                                        </div>
-                                        <div class="form-group">
-
-                                            <label for="price">Price</label>
-                                            <input type="text" name="productPrice" class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="quanlity">Quantity</label>
-                                            <input type="text" name="productQuantity" class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="description">Description</label>
-                                            <input type="text" name="productDescription" class="form-control">
-
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
-                                            </button>
-                                            <button type="submit" class="btn btn-primary">Save</button>
-                                    </form>
-                                </div>
-
+                            <div class="modal-header">
+                                <h5>Update product</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                             </div>
+                            <div class="modal-body">
+                                <form action="/category/create" method="POST">
+                                    <div class="form-group">
+                                        <label for="name">Category Name</label>
+                                        <input type="text" name="categoryName" class="form-control">
+                                    </div>
+
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </form>
+                            </div>
+
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <form action="/product/search" method="POST">
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <input type="text" name="productName" class="form-control" placeholder="Search">
-                                </div>
-                                <div class="col-md-3">
-                                    {htmlcategories}
-                                </div>
-                                <div class="col-md-1">
-                                    <button style="border: 0px" type="submit"><span style="color: #0059B3; "
-                                                                                    aria-hidden="true"><i
-                                            class="fa fa-search"></i></span></button>
-                                </div>
-
-                            </div>
-                        </form>
                     </div>
-                    <div class="col-md-6">
-                        <a type="button" class="close" data-toggle="modal" data-target="#add">
-                            <span style="color: #0059B3; " aria-hidden="true"><i class="fa fa-plus"></i></span>
-                        </a>
+                <div class="col-md-12">
+                <a type="button" class="close" data-toggle="modal" data-target="#add">
+                    <span style="color: #0059B3; " aria-hidden="true"><i class="fa fa-plus"></i></span>
+                </a>
+                </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="table-wrap">
+                        <table class="table table-responsive-xl">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>CategoryName</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {list-category}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+            </div>
 
-            </div>
-            <div class="col-md-12">
-                <div class="table-wrap">
-                    <table class="table table-responsive-xl">
-                        <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Images</th>
-                            <th>Product Name</th>
-                            <th>Category Name</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Description</th>
-                            <th>Status</th>
-                            <th>&nbsp;</th>
-                            <th>&nbsp;</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {list-product}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
         </div>
+        <footer class="footer">
+            <div class="container-fluid">
 
+            </div>
+        </footer>
     </div>
-    <footer class="footer">
-        <div class="container-fluid">
-
-        </div>
-    </footer>
-</div>
 </div>
 
 </body>
