@@ -5,10 +5,10 @@ class Database{
     }
     static connect(){
         return mysql.createConnection({
-            'host': 'localhost',
-            'user': 'root',
+            'host': '127.0.0.1',
+            'user': 'newUser',
             'password' : 'shmily',
-            'database' : 'clothingsalesmanager'
+            'database' : 'ClothingSalesManager'
         })
     }
 }

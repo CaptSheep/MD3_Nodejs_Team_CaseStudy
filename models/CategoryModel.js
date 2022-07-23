@@ -7,7 +7,7 @@ class CategoryModel {
 
     async getAllCategory() {
         return new Promise((resolve, reject) => {
-            let sqlSelect = 'SELECT * FROM category';
+            let sqlSelect = 'SELECT * FROM Category';
             this.conn.query(sqlSelect, (err, data) => {
                 if (err) {
                     reject(err);
@@ -19,7 +19,7 @@ class CategoryModel {
 
     async getCategoryByName() {
         return new Promise((resolve, reject) => {
-            let sqlSelect = 'SELECT * FROM category';
+            let sqlSelect = 'SELECT * FROM Category';
             this.conn.query(sqlSelect, (err, data) => {
                 if (err) {
                     reject(err);
@@ -31,7 +31,7 @@ class CategoryModel {
 
     async updateCategory(id, newCategory) {
         return new Promise((resolve, reject) => {
-            let sqlUpdate = `UPDATE category
+            let sqlUpdate = `UPDATE Category
                              SET CategoryName = N'${newCategory.categoryName}'
                              WHERE CategoryId = ${id}`
             this.conn.query(sqlUpdate, (err, data) => {

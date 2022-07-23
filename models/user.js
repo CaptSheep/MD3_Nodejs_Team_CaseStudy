@@ -7,7 +7,7 @@ module.exports = class User {
     }
     checkAccount(email, password) {
         return new Promise((resolve, reject) => {
-            let sql = `select customerEmail, customerPassword,roleId from Customer , RoleCustomerDetails where customerEmail = '${email}' and customerPassword = '${password}'`
+            let sql = `select customerEmail, customerPassword,roleId from Customer  inner join RoleCustomerDetails on Customer.customerId =  RoleCustomerDetails.roleId where customerEmail = '${email}' and customerPassword = '${password}'`
             this.conn.query(sql, (err, data) => {
                 if (err) {
                     reject(err);

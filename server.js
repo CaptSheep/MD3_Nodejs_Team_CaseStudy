@@ -86,13 +86,30 @@ router = {
     '/product/create': handlers.product_create,
     '/login' : handlers.login,
     '/' : handlers.home,
+    '/register': handlers.register,
     '/category' : handlers.category,
     '/category/update' : handlers.category_update,
     '/category/create' : handlers.category_create,
     '/product/search' : handlers.search
 }
 
+let rules = [
+        {
+          key: 'email',
+          value: authController.userModel.email ? email.trim() : '',
+          rules: 'required|min_length[6]|max_length[32]|email',
+         
+        },
+        {
+          key: 'password',
+          value: authController.userModel.password ? password.trim() : '',
+          rules: 'required|min_length[6]|max_length[15]'
+        },
+      ];
 let mimeTypes={
+    '/login' : handlers.login,
+    '/' : handlers.home,
+    '/register': handlers.register,
     'jpg' : 'images/jpg',
     'png' : 'images/png',
     'js' :'text/javascript',
@@ -122,9 +139,4 @@ server.listen(8081, 'localhost', ()=>{
 })
 
 
-const router = {
-    '/login' : handlers.login,
-    '/' : handlers.home,
-    '/register': handlers.register,
-}
 

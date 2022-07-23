@@ -57,12 +57,12 @@ class AuthController {
             result.forEach(item=> {
                 if (item.roleId === 1) {
                     admin = true;
-                    res.writeHead(301, { Location: '/' });
+                    res.writeHead(301, { Location: '/product' });
                     return res.end();
                 }
             })
             if (!admin) {
-                res.writeHead(301, { Location: '/home' });
+                res.writeHead(301, { Location: '/' });
                 return res.end();
             }
 

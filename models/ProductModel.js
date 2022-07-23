@@ -6,7 +6,7 @@ class ProductModel{
     }
     async getAllProduct(){
         return new Promise((resolve, reject)=>{
-            let sqlSelect = 'SELECT * FROM showProduct';
+            let sqlSelect = 'SELECT * FROM Product';
             this.conn.query(sqlSelect, (err, data)=>{
                 if(err){
                     reject(err);
@@ -17,7 +17,7 @@ class ProductModel{
     }
     async getProdcutById(id){
         return new Promise((resolve, reject)=>{
-            let sqlSelect = `SELECT * FROM product where productStatus != 0 and productId = ${id}`;
+            let sqlSelect = `SELECT * FROM Product where productStatus != 0 and productId = ${id}`;
             this.conn.query(sqlSelect, (err, data)=>{
                 if(err){
                     reject(err);
@@ -28,7 +28,7 @@ class ProductModel{
     }
     async getProductByCategory(id){
         return new Promise((resolve, reject)=>{
-            let sqlSelect = `SELECT * FROM product where productStatus != 0 and productCatergoryId = ${id}`;
+            let sqlSelect = `SELECT * FROM Product where productStatus != 0 and productCatergoryId = ${id}`;
             this.conn.query(sqlSelect, (err, data)=>{
                 if(err){
                     reject(err);
@@ -39,7 +39,7 @@ class ProductModel{
     }
     async updateProductById(newProduct, id){
         return new Promise((resolve, reject)=>{
-            let sqlUpdate = `UPDATE product SET productName = N'${newProduct.productName}', productCategoryId = ${newProduct.productCategoryId}, productPrice = ${newProduct.productPrice}, productQuantity = ${newProduct.productQuantity}, productDescription = N'${newProduct.productDescription}', productStatus = ${newProduct.productStatus === 'Active'? 1 : 0}  WHERE productId = ${id}`
+            let sqlUpdate = `UPDATE Product SET productName = N'${newProduct.productName}', productCategoryId = ${newProduct.productCategoryId}, productPrice = ${newProduct.productPrice}, productQuantity = ${newProduct.productQuantity}, productDescription = N'${newProduct.productDescription}', productStatus = ${newProduct.productStatus === 'Active'? 1 : 0}  WHERE productId = ${id}`
             this.conn.query(sqlUpdate, (err, data)=>{
                 if(err){
                     reject(err);
