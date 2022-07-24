@@ -31,7 +31,7 @@ class AuthController {
 
         let result = await this.userModel.checkAccount(user.email, user.password)
         result = JSON.parse(JSON.stringify(result))
-        console.log(result);
+        // console.log(result);
         if (result.length > 0) {
 
             let nameFile = Date.now();
@@ -80,10 +80,12 @@ class AuthController {
         }
         const data = Buffer.concat(buffer).toString();
         const user = qs.parse(data);
-        this.userModel.createAccount(user).then(result => {
+        if(this.userModel.checkEmail(req,res)){
+            this.userModel.createAccount(user).then(result => {
             res.writeHead(301, { Location: '/login' });
             res.end();
         });
+        }
     }
 }
 module.exports = AuthController

@@ -93,19 +93,7 @@ router = {
     '/product/search' : handlers.search
 }
 
-let rules = [
-        {
-          key: 'email',
-          value: authController.userModel.email ? email.trim() : '',
-          rules: 'required|min_length[6]|max_length[32]|email',
-         
-        },
-        {
-          key: 'password',
-          value: authController.userModel.password ? password.trim() : '',
-          rules: 'required|min_length[6]|max_length[15]'
-        },
-      ];
+
 let mimeTypes={
     '/login' : handlers.login,
     '/' : handlers.home,
