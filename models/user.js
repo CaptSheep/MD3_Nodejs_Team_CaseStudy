@@ -46,7 +46,7 @@ module.exports = class User {
                 if (err) {
                     console.log(err);
                 }
-                datahtml = datahtml.replace('{Error}','<p style="color:red ;">Wrong type of Email.Please try again</p>');
+                datahtml = datahtml.replace('<span hidden>{Error}</span>','<p style="color:red ;">Wrong type of Email.Please try again</p>');
                 res.writeHead(200, { 'Content-Type': 'text/html' });
                 res.write(datahtml);
                 return res.end();
