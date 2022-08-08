@@ -44,12 +44,8 @@ handlers.product_update = (req, res)=>{
 handlers.product_delete = (req, res)=>{
     let queryUrl = url.parse(req.url).query;
     let id = qs.parse(queryUrl).id;
+    productController.deleteProduct(req, res, id);
 };
-handlers.image_update = (req, res)=>{
-    let queryUrl = url.parse(req.url).query;
-    let id = qs.parse(queryUrl).id;
-    productController.updateImageProduct(req, res, id);
-}
 handlers.product_create = (req, res)=>{
     productController.createProduct(req, res);
 }
@@ -75,6 +71,11 @@ handlers.category_create = (req, res)=>{
     let id = qs.parse(queryUrl).id;
     categoryController.createCategory(req, res);
 }
+handlers.category_delete = (req, res)=>{
+    let queryUrl = url.parse(req.url).query;
+    let id = qs.parse(queryUrl).id;
+    categoryController.deleteCategory(req, res, id);
+}
 handlers.search = (req, res)=>{
     productController.searchProduct(req, res);
 }
@@ -82,13 +83,14 @@ router = {
     '/product' : handlers.products,
     '/product/update' : handlers.product_update,
     '/product/delete' : handlers.product_delete,
-    '/product/image/update': handlers.image_update,
     '/product/create': handlers.product_create,
     '/login' : handlers.login,
     '/' : handlers.home,
+    '/register': handlers.register,
     '/category' : handlers.category,
     '/category/update' : handlers.category_update,
     '/category/create' : handlers.category_create,
+    '/category/delete' : handlers.category_delete,
     '/product/search' : handlers.search
 }
 
@@ -120,11 +122,4 @@ const server = http.createServer(async(req, res)=>{
 server.listen(8081, 'localhost', ()=>{
     console.log("Server is running on http://localhost:8081");
 })
-
-
-const router = {
-    '/login' : handlers.login,
-    '/' : handlers.home,
-    '/register': handlers.register,
-}
 

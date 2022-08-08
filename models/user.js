@@ -7,7 +7,7 @@ module.exports = class User {
     }
     checkAccount(email, password) {
         return new Promise((resolve, reject) => {
-            let sql = `select customerEmail, customerPassword,roleId from Customer , RoleCustomerDetails where customerEmail = '${email}' and customerPassword = '${password}'`
+            let sql = `select customerEmail, customerPassword,roleId from Customer  join rolecustomerdetails r on customer.customerId = r.customerId where customerEmail = '${email}' and customerPassword = '${password}'`
             this.conn.query(sql, (err, data) => {
                 if (err) {
                     reject(err);
@@ -18,7 +18,7 @@ module.exports = class User {
     }
     createAccount(data) {
         return new Promise((resolve, reject) => {
-            let sql = `INSERT INTO Customer ( customerUserName, customerPassword, customerName, customerPhone,customerEmail,customerAddress)  VALUES('${data.customerUserName}','${data.customerPassword}','${data.customerName}',${data.customerPhone},'${data.customerEmail}','${data.customerAddress}')`
+            let sql = `call createAccount('${data.customerUserName}','${data.customerPassword}','${data.customerName}','${data.customerPhone}','${data.customerEmail}','${data.customerAddress}')`;
             this.conn.query(sql, (err, data) => {
                 if (err) {
                     reject(err);
