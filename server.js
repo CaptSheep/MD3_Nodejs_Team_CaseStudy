@@ -5,8 +5,10 @@ const qs = require('qs');
 const AuthController = require('./controllers/authController')
 const ProductController = require('./controllers/ProductController');
 const CategoryController = require("./controllers/CategoryController");
+const UserController = require("./controllers/UserController");
 let productController = new ProductController();
 let categoryController = new CategoryController();
+let userController = new UserController();
 
 handlers = {};
 
@@ -79,6 +81,25 @@ handlers.category_delete = (req, res)=>{
 handlers.search = (req, res)=>{
     productController.searchProduct(req, res);
 }
+
+handlers.users = (req, res)=>{
+    userController.showAllUser(req, res);
+}
+handlers.user_update = (req, res)=>{
+    let queryUrl = url.parse(req.url).query;
+    let id = qs.parse(queryUrl).id;
+    categoryController.updateCategory(req, res, id);
+}
+handlers.user_create = (req, res)=>{
+    let queryUrl = url.parse(req.url).query;
+    let id = qs.parse(queryUrl).id;
+    categoryController.createCategory(req, res);
+}
+handlers.user_delete = (req, res)=>{
+    let queryUrl = url.parse(req.url).query;
+    let id = qs.parse(queryUrl).id;
+    categoryController.deleteCategory(req, res, id);
+}
 router = {
     '/product' : handlers.products,
     '/product/update' : handlers.product_update,
@@ -91,7 +112,11 @@ router = {
     '/category/update' : handlers.category_update,
     '/category/create' : handlers.category_create,
     '/category/delete' : handlers.category_delete,
-    '/product/search' : handlers.search
+    '/product/search' : handlers.search,
+    '/user': handlers.users,
+    '/user/update' : handlers.user_update,
+    '/user/create' : handlers.user_create,
+    '/user/delete' : handlers.user_delete,
 }
 
 let mimeTypes={

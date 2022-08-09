@@ -17,17 +17,6 @@ class CategoryModel {
         })
     }
 
-    async getCategoryByName() {
-        return new Promise((resolve, reject) => {
-            let sqlSelect = 'SELECT * FROM category';
-            this.conn.query(sqlSelect, (err, data) => {
-                if (err) {
-                    reject(err);
-                }
-                resolve(data);
-            })
-        })
-    }
 
     async updateCategory(id, newCategory) {
         return new Promise((resolve, reject) => {

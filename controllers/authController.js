@@ -85,5 +85,6 @@ class AuthController {
             res.end();
         });
     }
+
 }
 module.exports = AuthController
