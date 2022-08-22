@@ -19,6 +19,7 @@ module.exports = class User {
         })
     }
     createAccount(data) {
+        console.log(data)
         return new Promise((resolve, reject) => {
             let sql = `call createAccount('${data.customerUserName}','${data.customerPassword}','${data.customerName}','${data.customerPhone}','${data.customerEmail}','${data.customerAddress}')`;
             this.conn.query(sql, (err, data) => {
@@ -44,12 +45,10 @@ module.exports = class User {
         })
     }
 
-   // Not done
-    async updateUser(id, newCategory) {
+    async updateUser(id, user) {
         return new Promise((resolve, reject) => {
-            let sqlUpdate = `UPDATE category
-                             SET CategoryName = N'${newCategory.categoryName}'
-                             WHERE CategoryId = ${id}`
+            let sqlUpdate = `UPDATE Customer SET customerUserName = '${user.customerUserName}', customerPassword = '${user.customerPassword}', customerName = '${user.customerName}', customerPhone = '${user.customerPhone}',customerEmail = '${user.customerEmail}',customerAddress = '${user.customerAddress}' WHERE customerId = ${id};
+`
             this.conn.query(sqlUpdate, (err, data) => {
                 if (err) {
                     reject(err);
@@ -60,7 +59,7 @@ module.exports = class User {
     }
     async deleteUser(id){
         return new Promise((resolve, reject) => {
-            let sqlDelete = `DELETE from category where CategoryID = ${id}`
+            let sqlDelete = `call deleteAccount(${id})`
             this.conn.query(sqlDelete, (err, data) => {
                 if (err) {
                     reject(err);
@@ -69,10 +68,10 @@ module.exports = class User {
             })
         })
     }
-    async createUser(newCategory){
+    checkRole(id){
         return new Promise((resolve, reject) => {
-            let sqlCreate = `INSERT INTO Category(CategoryName)  value(N'${newCategory.categoryName}')`
-            this.conn.query(sqlCreate, (err, data) => {
+            let sqlSelect = `SELECT roleName FROM rolecustomer inner join rolecustomerdetails on rolecustomer.roleId = rolecustomerdetails.roleId where customerId = ${id}`
+            this.conn.query(sqlSelect, (err, data) => {
                 if (err) {
                     reject(err);
                 }
@@ -80,4 +79,17 @@ module.exports = class User {
             })
         })
     }
+
+    async changeRole(id, role){
+        return new Promise((resolve, reject) => {
+            let sqlUpdate = ``
+            this.conn.query(sqlSelect, (err, data) => {
+                if (err) {
+                    reject(err);
+                }
+                resolve(data);
+            })
+        })
+    }
+
 }

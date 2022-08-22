@@ -88,17 +88,22 @@ handlers.users = (req, res)=>{
 handlers.user_update = (req, res)=>{
     let queryUrl = url.parse(req.url).query;
     let id = qs.parse(queryUrl).id;
-    categoryController.updateCategory(req, res, id);
+    userController.updateUser(req, res, id);
 }
 handlers.user_create = (req, res)=>{
     let queryUrl = url.parse(req.url).query;
     let id = qs.parse(queryUrl).id;
-    categoryController.createCategory(req, res);
+    userController.createUser(req, res);
 }
 handlers.user_delete = (req, res)=>{
     let queryUrl = url.parse(req.url).query;
     let id = qs.parse(queryUrl).id;
-    categoryController.deleteCategory(req, res, id);
+    userController.deleteUser(req, res, id);
+}
+handlers.user_role = (req, res)=>{
+    let queryUrl = url.parse(req.url).query;
+    let id = qs.parse(queryUrl).id;
+    userController.changeRole(req, res, id);
 }
 router = {
     '/product' : handlers.products,
@@ -117,6 +122,7 @@ router = {
     '/user/update' : handlers.user_update,
     '/user/create' : handlers.user_create,
     '/user/delete' : handlers.user_delete,
+    '/user/role' : handlers.user_role
 }
 
 let mimeTypes={

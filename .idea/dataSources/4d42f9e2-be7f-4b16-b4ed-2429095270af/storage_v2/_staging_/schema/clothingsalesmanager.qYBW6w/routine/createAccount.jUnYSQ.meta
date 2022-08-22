@@ -1,0 +1,2 @@
+#n:createAccount
+#i:(varchar(30),varchar(30),varchar(100),varchar(11),varchar(30),varchar(100),unknown)

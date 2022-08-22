@@ -29,6 +29,11 @@ class ProductController {
                                 <td class="border-bottom-0"><span>${user.customerPhone}</span></td>
                                 <td class="border-bottom-0"><span>${user.customerEmail}</span></td>
                                 <td class="border-bottom-0"><span>${user.customerAddress}</span></td>
+                                <td class="border-bottom-0"><span>
+                                <a type="button" class="button-42" role="button" data-toggle="modal" data-target="#role-${index}">
+                                   <span class="change">Change Role User</span>    
+                                </a>
+                                    </span></td>
                                 <td class="border-bottom-0">
                                     <a type="button" class="close" data-toggle="modal" data-target="#edit-${index}">
                                         <span style="color: #0059B3; " aria-hidden="true"><i class="fa fa-edit"></i></span>
@@ -40,8 +45,13 @@ class ProductController {
                                     </a>
                                 </td>
                             </tr>`;
-                    html += this.showFormUpdate(index, user);
-                    html += this.showFormDelete(index, user);
+                    await this.showFormChangeRole(index, user).then(result=>{
+                        html += result;
+                    });
+                    await this.showFormUpdate(index, user).then(result=>{
+                        html += result;
+                    });
+                    html += await this.showFormDelete(index, user);
                 }
                 data = data.replace('{create}', this.showFormCreate());
                 data = data.replace('{list-user}', html);
@@ -55,8 +65,9 @@ class ProductController {
         })
 
     }
-    showFormUpdate(index, user){
-        let update = fs.readFileSync('./views/admin/user/edit.html', {encoding:'utf-8'});
+
+    async showFormUpdate(index, user) {
+        let update = fs.readFileSync('./views/admin/user/edit.html', {encoding: 'utf-8'});
         update = update.replace('{option}', `edit-${index}`)
         update = update.replace('{username}', `${user.customerUserName}`)
         update = update.replace('{password}', `${user.customerPassword}`)
@@ -67,67 +78,56 @@ class ProductController {
         update = update.replace('{param}', `${user.customerId}`)
         return update;
     }
-    showFormCreate(){
-        return fs.readFileSync('./views/admin/user/create.html', {encoding:'utf-8'});
+
+    async showFormChangeRole(index, user) {
+        let role = fs.readFileSync('./views/admin/user/role.html', {encoding: 'utf-8'});
+        role = role.replace('{option}', `role-${index}`);
+        await this.userModel.checkRole(user.customerId).then(results => {
+            results.forEach(item => {
+                if (item.roleName === 'ADMIN') {
+                    role = role.replace('{admin}', `checked`);
+                } else if (item.roleName === 'USER') {
+                    role = role.replace('{admin}', ``);
+                    role = role.replace('{user}', `checked`);
+                } else {
+                    role = role.replace('{user}', ``);
+                }
+            })
+        });
+        return role;
+
     }
-    showFormDelete(index, user){
-        let delete1 = fs.readFileSync('./views/admin/user/delete.html', {encoding:'utf-8'});
+
+    showFormCreate() {
+        return fs.readFileSync('./views/admin/user/create.html', {encoding: 'utf-8'});
+    }
+
+    async showFormDelete(index, user) {
+        let delete1 = fs.readFileSync('./views/admin/user/delete.html', {encoding: 'utf-8'});
         delete1 = delete1.replace('{option}', `delete-${index}`)
         delete1 = delete1.replace('{user}', `${user.customerName}`);
+        delete1 = delete1.replace('{param}', `${user.customerId}`);
         return delete1;
+
     }
-    // not done
+
     async updateUser(req, res, id) {
-        let form = new formidable.IncomingForm();
-        form.uploadDir = "assets/images/products/";
-
-        const product = await new Promise((resolve, reject) => {
-            form.parse(req, function (err, fields, files) {
-                if (err) {
-                    reject(err.message);
-                }
-                let product = {
-                    productName: fields.productName,
-                    productCategoryId: fields.productCategoryId,
-                    productPrice: fields.productPrice,
-                    productQuantity: fields.productQuantity,
-                    productDescription: fields.productDescription,
-                    productStatus: fields.productStatus,
-                    imageLink: files.imageLink.originalFilename
-                }
-                if (product.imageLink !== '') {
-                    let tmpPath = files.imageLink.filepath;
-                    let newPath = form.uploadDir + files.imageLink.originalFilename;
-                    fs.readFile(newPath, (err) => {
-                        if (err) {
-                            fs.rename(tmpPath, newPath, (err) => {
-                                if (err) throw err;
-                            });
-                        }
-                    })
-
-                }
-                resolve(product);
-            });
-        })
-        this.productModel.updateProductById(product, id).then(result => {
-            if (product.imageLink !== '') {
-                this.imageModel.updateImageByProductID(id, product.imageLink).then(() => {
-
-                })
-            }
-
-            res.writeHead(301, {Location: '/product'});
+        let buffer = [];
+        for await (const chunk of req) {
+            buffer.push(chunk);
+        }
+        const data = Buffer.concat(buffer).toString();
+        const user = qs.parse(data);
+        this.userModel.updateUser(id, user).then(result => {
+            res.writeHead(301, {Location: '/user'});
             res.end();
-        })
-
-
+        });
     }
 
     async deleteUser(req, res, id) {
 
-        this.productModel.deleteProduct(id).then(result => {
-            res.writeHead(301, {Location: '/product'});
+        this.userModel.deleteUser(id).then(result => {
+            res.writeHead(301, {Location: '/user'});
             res.end();
         })
 
@@ -135,37 +135,29 @@ class ProductController {
     }
 
     async createUser(req, res) {
-        let form = new formidable.IncomingForm();
-        form.uploadDir = "public/images/admin/";
-        const product = await new Promise((resolve, reject) => {
-            form.parse(req, function (err, fields, files) {
-                if (err) {
-                    reject(err.message);
-                }
-                let product = {
-                    productName: fields.productName,
-                    productCategoryId: fields.productCategoryId,
-                    productPrice: fields.productPrice,
-                    productQuantity: fields.productQuantity,
-                    productDescription: fields.productDescription,
-                    imageLink: files.imageLink.originalFilename
-                }
-                let tmpPath = files.imageLink.filepath;
-                let newPath = form.uploadDir + files.imageLink.originalFilename;
-                fs.readFile(newPath, (err) => {
-                    if (err) {
-                        fs.rename(tmpPath, newPath, (err) => {
-                            if (err) throw err;
-                        });
-                    }
-                })
-                resolve(product);
-            });
-        })
-        await this.productModel.createProduct(product).then(result => {
-            res.writeHead(301, {Location: '/product'});
+        let buffer = [];
+        for await (const chunk of req) {
+            buffer.push(chunk);
+        }
+        const data = Buffer.concat(buffer).toString();
+        const user = qs.parse(data);
+        this.userModel.createAccount(user).then(result => {
+            res.writeHead(301, {Location: '/user'});
             res.end();
-        })
+        });
+    }
+
+    async changeRole(req, res, id) {
+        let buffer = [];
+        for await (const chunk of req) {
+            buffer.push(chunk);
+        }
+        const data = Buffer.concat(buffer).toString();
+        const role = qs.parse(data);
+        buffer = [];
+        role.roleUser ? buffer.push('USER') : '';
+        role.roleAdmin ? buffer.push('ADMIN') : '';
+        console.log(buffer)
     }
 
 }
