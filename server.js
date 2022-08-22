@@ -5,8 +5,10 @@ const qs = require('qs');
 const AuthController = require('./controllers/authController')
 const ProductController = require('./controllers/ProductController');
 const CategoryController = require("./controllers/CategoryController");
+const UserController = require("./controllers/UserController");
 let productController = new ProductController();
 let categoryController = new CategoryController();
+let userController = new UserController();
 
 handlers = {};
 
@@ -44,12 +46,8 @@ handlers.product_update = (req, res)=>{
 handlers.product_delete = (req, res)=>{
     let queryUrl = url.parse(req.url).query;
     let id = qs.parse(queryUrl).id;
+    productController.deleteProduct(req, res, id);
 };
-handlers.image_update = (req, res)=>{
-    let queryUrl = url.parse(req.url).query;
-    let id = qs.parse(queryUrl).id;
-    productController.updateImageProduct(req, res, id);
-}
 handlers.product_create = (req, res)=>{
     productController.createProduct(req, res);
 }
@@ -75,14 +73,42 @@ handlers.category_create = (req, res)=>{
     let id = qs.parse(queryUrl).id;
     categoryController.createCategory(req, res);
 }
+handlers.category_delete = (req, res)=>{
+    let queryUrl = url.parse(req.url).query;
+    let id = qs.parse(queryUrl).id;
+    categoryController.deleteCategory(req, res, id);
+}
 handlers.search = (req, res)=>{
     productController.searchProduct(req, res);
+}
+
+handlers.users = (req, res)=>{
+    userController.showAllUser(req, res);
+}
+handlers.user_update = (req, res)=>{
+    let queryUrl = url.parse(req.url).query;
+    let id = qs.parse(queryUrl).id;
+    userController.updateUser(req, res, id);
+}
+handlers.user_create = (req, res)=>{
+    let queryUrl = url.parse(req.url).query;
+    let id = qs.parse(queryUrl).id;
+    userController.createUser(req, res);
+}
+handlers.user_delete = (req, res)=>{
+    let queryUrl = url.parse(req.url).query;
+    let id = qs.parse(queryUrl).id;
+    userController.deleteUser(req, res, id);
+}
+handlers.user_role = (req, res)=>{
+    let queryUrl = url.parse(req.url).query;
+    let id = qs.parse(queryUrl).id;
+    userController.changeRole(req, res, id);
 }
 router = {
     '/product' : handlers.products,
     '/product/update' : handlers.product_update,
     '/product/delete' : handlers.product_delete,
-    '/product/image/update': handlers.image_update,
     '/product/create': handlers.product_create,
     '/login' : handlers.login,
     '/' : handlers.home,
@@ -90,7 +116,13 @@ router = {
     '/category' : handlers.category,
     '/category/update' : handlers.category_update,
     '/category/create' : handlers.category_create,
-    '/product/search' : handlers.search
+    '/category/delete' : handlers.category_delete,
+    '/product/search' : handlers.search,
+    '/user': handlers.users,
+    '/user/update' : handlers.user_update,
+    '/user/create' : handlers.user_create,
+    '/user/delete' : handlers.user_delete,
+    '/user/role' : handlers.user_role
 }
 
 

@@ -59,6 +59,8 @@ class AuthController {
             res.setHeader('set-cookie', cookie.serialize('cookie-app', JSON.stringify(cookieLogin)));
 
             result.forEach((item)=> {
+            console.log(result)
+            result.forEach(item=> {
                 if (item.roleId === 1) {
                     admin = true;
                     res.writeHead(301, { Location: '/product' });
@@ -79,18 +81,18 @@ class AuthController {
                 datahtml = datahtml.replace('<li class="menu-item" ><a title="Register or Login" href="/login">Register</a></li>','')
               res.writeHead(301, { Location: '/' },{'Content-Type': 'text/html'});
                 res.write(datahtml);
+                res.writeHead(301, { Location: '/' });
                 return res.end();
                 })
                 
             }
-
-        } else {
+            else {
             res.writeHead(301, { Location: '/login' });
             return res.end();
         }
-
-
+        })
     }
+}
      async register(req, res) {
         let buffer = [];
         for await (const chunk of req) {
@@ -105,9 +107,7 @@ class AuthController {
         }); 
         
         }
-        
-        
-         
     }
-}
+    }
+
 module.exports = AuthController

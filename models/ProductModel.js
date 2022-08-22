@@ -44,7 +44,6 @@ class ProductModel{
                 if(err){
                     reject(err);
                 }
-                console.log( data)
                 resolve(data);
             })
         })
@@ -57,6 +56,28 @@ class ProductModel{
                     reject(err);
                 }
                 console.log( data)
+                resolve(data);
+            })
+        })
+    }
+    async checkDelete(id){
+        return new Promise((resolve, reject)=>{
+            let sqlSelect = `select * from product inner join orderdetails on product.productId = orderdetails.productId where product.productId = ${id};`;
+            this.conn.query(sqlSelect, (err, data)=>{
+                if(err){
+                    reject(err);
+                }
+                resolve(data);
+            })
+        })
+    }
+    async deleteProduct(id){
+        return new Promise((resolve, reject) => {
+            let sqlDelete = `CALL deleteProduct(${id});`;
+            this.conn.query(sqlDelete, (err, data) => {
+                if (err) {
+                    reject(err);
+                }
                 resolve(data);
             })
         })

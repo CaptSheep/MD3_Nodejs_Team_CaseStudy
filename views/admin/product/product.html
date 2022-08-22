@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <link rel="stylesheet" href="../../../public/css/admin/style.css">
+    <script href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
 <body>
@@ -42,14 +43,20 @@
             <ul class="nav">
                 <li class="nav-item">
                     <a class="nav-link" href="/product">
-                        <i class="nc-icon nc-chart-pie-35"></i>
+                        <i class="nc-icon nc-tablet-2"></i>
                         <p>Product List</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/category">
-                        <i class="nc-icon nc-chart-pie-35"></i>
+                        <i class="nc-icon nc-explore-2"></i>
                         <p>Category List</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user">
+                        <i class="nc-icon nc-apple"></i>
+                        <p>User List</p>
                     </a>
                 </li>
             </ul>
@@ -100,7 +107,7 @@
                             <div class="modal-content">
 
                                 <div class="modal-header">
-                                    <h5>Update product</h5>
+                                    <h5>Create product</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -112,8 +119,13 @@
                                             <input type="text" name="productName" class="form-control">
                                         </div>
                                         <div class="form-group">
-                                            <label for="imageLink">Image</label>
-                                            <input type="file" name="imageLink" class="form-control">
+                                            <label for="imgInp">Image</label>
+                                            <br>
+                                            <input accept="image/*" type='file' id="imgInp" name="imageLink"
+                                                   onchange="preview(this, 'blah')"/>
+                                            <br>
+                                            <img hidden style="width: 150px !important; height: 150px !important;" id="blah" src="http://placehold.it/180" alt="your image"/>
+
                                         </div>
                                         <div class="form-group">
                                             <label for="category">Category Name</label>
@@ -213,7 +225,7 @@
 <!--  Google Maps Plugin    -->
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
 <!--  Chartist Plugin  -->
-<script src="../../../public/js/admin/plugins/chartist.min.js"></script>
+<!--<script src="../../../public/js/admin/plugins/chartist.min.js"></script>-->
 <!--  Notifications Plugin    -->
 <script src="../../../public/js/admin/plugins/bootstrap-notify.js"></script>
 <!-- Control Center for Light Bootstrap Dashboard: scripts for the example pages etc -->
@@ -222,6 +234,20 @@
 <script src="../../../public/js/admin/demo.js"></script>
 <script src="../../../public/js/admin/main.js"></script>
 <script type="text/javascript">
+    function preview(input, id) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#' + id)
+                    .attr('src', e.target.result);
+                $('#' + id).removeAttr('hidden');
+            };
+            reader.readAsDataURL(input.files[0]);
+
+        }
+    }
+
 </script>
 
 </html>
