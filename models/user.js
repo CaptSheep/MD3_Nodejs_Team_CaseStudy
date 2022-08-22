@@ -1,13 +1,12 @@
 const Database = require('./Database');
-let emailValidator = require('email-validator')
-const authController = require('../controllers/authController')
+// const authController = require('../controllers/authController')
 const qs = require('qs')
-const fs = require('fs')
+const fs = require('fs');
+const isEmpty = require('is-empty');
+
 module.exports = class User {
     constructor() {
         this.conn = Database.connect();
-    
-
     }
     rules = [
         {
@@ -32,29 +31,7 @@ module.exports = class User {
             })
         })
     }
-    checkEmail(req,res,datahtml){
-        let buffer = [];
-        const data = Buffer.concat(buffer).toString();
-        const user = qs.parse(data);
-        if(emailValidator.validate(user.email)){
-          
-            throw new Error('Wrong type of Email. Please try again')
-        }
-        else{
-            //  throw Error('Wrong type of Email');
-           fs.readFile('./views/auth/register.html', 'utf8', function(err, datahtml) {
-                if (err) {
-                    console.log(err);
-                }
-                datahtml = datahtml.replace('<span hidden>{Error}</span>','<p style="color:red ;">Wrong type of Email.Please try again</p>');
-                res.writeHead(200, { 'Content-Type': 'text/html' });
-                res.write(datahtml);
-                return res.end();
-            });
-        }
-        
-    }
-    createAccount(data) {
+    async createAccount(data) {
         return new Promise((resolve, reject) => {
             let sql = `CALL createAccount('${data.customerUserName}','${data.customerPassword}','${data.customerName}','${data.customerPhone}','${data.customerEmail}','${data.customerAddress}')`
             this.conn.query(sql, (err, data) => {

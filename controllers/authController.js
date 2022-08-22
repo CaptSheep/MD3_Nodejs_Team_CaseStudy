@@ -1,12 +1,16 @@
 const fs = require('fs')
 const qs = require('qs')
 const User = require('../models/user')
+const Validate = require('../models/Validate')
+const dom = require('xmldom')
+
 const cookie = require('cookie')
 
 
 class AuthController {
     constructor() {
         this.userModel = new User()
+        this.validate = new Validate()
     }
 
     showForm(req, res, pathFile) {
@@ -54,7 +58,7 @@ class AuthController {
             let admin = false;
             res.setHeader('set-cookie', cookie.serialize('cookie-app', JSON.stringify(cookieLogin)));
 
-            result.forEach(item=> {
+            result.forEach((item)=> {
                 if (item.roleId === 1) {
                     admin = true;
                     res.writeHead(301, { Location: '/product' });
@@ -62,8 +66,22 @@ class AuthController {
                 }
             })
             if (!admin) {
-                res.writeHead(301, { Location: '/' });
+                let login = '<li class="menu-item" ><a title="Register or Login" href="/login">Login</a></li>';
+                let register = '<li class="menu-item" ><a title="Register or Login" href="/login">Register</a></li>';
+                let loginParse = new dom.DOMParser().parseFromString(login,'text/xml');
+                let registerParse = new dom.DOMParser().parseFromString(register,'text/xml');
+                var loginOutput = parser.getElementsByTagName('<li class="menu-item" ><a title="Register or Login" href="/login">Login</a></li>')[0]
+                fs.readFile('./views/auth/home.html','utf-8',(err,datahtml)=>{
+                    if(err){
+                        throw new Error(err.message)
+                    }
+                datahtml = datahtml.replace(loginOutput,`${user.customerName}`)
+                datahtml = datahtml.replace('<li class="menu-item" ><a title="Register or Login" href="/login">Register</a></li>','')
+              res.writeHead(301, { Location: '/' },{'Content-Type': 'text/html'});
+                res.write(datahtml);
                 return res.end();
+                })
+                
             }
 
         } else {
@@ -80,12 +98,16 @@ class AuthController {
         }
         const data = Buffer.concat(buffer).toString();
         const user = qs.parse(data);
-        if(this.userModel.checkEmail(req,res)){
-            this.userModel.createAccount(user).then(result => {
+        if(this.validate.validate(req,res,user.customerEmail, user.customerName,user.customerPassword,user.customerAddress,user.customerPhone)){
+        await this.userModel.createAccount(user).then(result => {
             res.writeHead(301, { Location: '/login' });
             res.end();
-        });
+        }); 
+        
         }
+        
+        
+         
     }
 }
 module.exports = AuthController

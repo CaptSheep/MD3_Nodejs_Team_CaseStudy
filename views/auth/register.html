@@ -41,7 +41,7 @@
 							</ul>
 						</div>
 						<div class="topbar-menu right-menu">
-							<ul>
+							<ul id ="login-logout">
 								<li class="menu-item" ><a title="Register or Login" href="/login">Login</a></li>
 								<li class="menu-item" ><a title="Register or Login" href="/register">Register</a></li>
 								<li class="menu-item lang-menu menu-item-has-children parent">
@@ -204,26 +204,31 @@
 									</fieldset>									
 									<fieldset class="wrap-input">
 										<label for="frm-reg-lname">User Name*</label>
-										<input type="text" id="frm-reg-lname" name="customerUserName" placeholder="User Name*">
+										<input type="text" id="frm-reg-lname" name="customerUserName" placeholder="User Name*" onchange="">
+										<span hidden>{userName}</span>
 									</fieldset>
 									<fieldset class="wrap-input">
 										<label for="frm-reg-email">Password*</label>
 										<input type="password" id="frm-reg-email" name="customerPassword" placeholder="********">
+										<span hidden>{password}</span>
 									</fieldset><fieldset class="wrap-input">
 										<label for="frm-reg-email">Full Name *</label>
 										<input type="text" id="frm-reg-email" name="customerName" placeholder="Full Name*">
+										<span hidden>{name}</span>
 									</fieldset><fieldset class="wrap-input">
 										<label for="frm-reg-email">Phone Number*</label>
 										<input type="text" id="frm-reg-email" name="customerPhone" placeholder="Phone Number*">
+										<span hidden>{phone}</span>
 									</fieldset>
 									<fieldset class="wrap-input">
 										<label for="frm-reg-email">Email*</label>
-										<input type="text" id="frm-reg-email" name="customerEmail" placeholder="Email*">
-										<span hidden>{Error}</span>
+										<input type="text" id="frm-reg-email" name="customerEmail" placeholder="Email*" e>
+										<span hidden>{email}</span>
 									</fieldset>
 									<fieldset class="wrap-input">
 										<label for="frm-reg-email">Address*</label>
 										<input type="text" id="frm-reg-email" name="customerAddress" placeholder="Address*">
+										<span hidden>{address}</span>
 									</fieldset>
 									<fieldset class="wrap-functions ">
 										<label class="remember-field">
@@ -235,7 +240,7 @@
 										<label for="frm-reg-cfpass">Confirm Password *</label>
 										<input type="text" id="frm-reg-cfpass" name="reg-cfpass" placeholder="Confirm Password">
 									</fieldset> -->
-									<input type="submit" class="btn btn-sign" value="Register" name="register">
+									<input type="submit" id="register" class="btn btn-sign" value="Register" name="register">
 								</form>
 							</div>											
 						</div>
@@ -510,5 +515,7 @@
 	<script src="/assets/js/jquery.sticky.js"></script>
 	<script src="/assets/js/functions.js"></script>
 	<!--footer area-->
+
+
 </body>
 </html>
