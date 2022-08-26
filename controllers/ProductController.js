@@ -4,6 +4,7 @@ let ImageModel = require('../models/ImageModel')
 const fs = require("fs");
 const qs = require('qs');
 const formidable = require("formidable");
+const url = require('url')
 
 class ProductController {
     constructor() {
@@ -11,7 +12,180 @@ class ProductController {
         this.categoryModel = new CategoryModel();
         this.imageModel = new ImageModel();
     }
+    getDetailProductById(req,res){
+        const urlPath = url.parse(req.url, true);
+        let queryString = urlPath.query;
+        let id = queryString.id;
+       this.productModel.getDetailProduct(id).then(products => {
+           fs.readFile('./views/user/details.html','utf-8',async (err,data) => {
+               if (err) console.log(err);
+               let html = `<div class="detail-media">
+                              <div class="product-gallery">
+                                 <ul class="slides">`;
+               console.log(products);
+               for (let i = 0; i < products.length; i++) {
+                   html = html + `<li data-thumb="/assets/images/products/${products[i].imageLink}">
+                                    <img src="/assets/images/products/${products[i].imageLink}" alt="product thumbnail" />
+                                </li>`;
+               }
+               html = html + `</ul></div> </div>`;
+               html = html + `<div class="detail-info">
+                        <div class="product-rating">
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                        </div>
+                        <h2 class="product-name">${products[0].productName}</h2>
+                        <div class="short-desc">
+                            <ul>
+                                <li>${products[0].productDescription}</li>
+                            </ul>
+                        </div>
+                        <div class="wrap-social">
+                            <a class="link-socail" href="#"><img src="/assets/images/social-list.png" alt=""></a>
+                        </div>
+                        <div class="wrap-price"><span class="product-price">${products[0].productPrice}</span></div>
+                        <div class="stock-info in-stock">
+                            <p class="availability">Availability: <b>In Stock</b></p>
+                        </div>
+                        <div class="quantity">
+                            <span>Quantity:</span>
+                            <div class="quantity-input">
+                                <input type="text" name="product-quatity" value="1" data-max="120" pattern="[0-9]*" >
 
+                                <a class="btn btn-reduce" href="#"></a>
+                                <a class="btn btn-increase" href="#"></a>
+                            </div>
+                        </div>
+                        <div class="wrap-butons">
+                            <a href="#" class="btn add-to-cart">Add to Cart</a>
+                            <div class="wrap-btn">
+                                <a href="#" class="btn btn-compare">Add Compare</a>
+                                <a href="#" class="btn btn-wishlist">Add Wishlist</a>
+                            </div>
+                        </div>
+                    </div>`;
+
+               data = data.replace('{detail}', html);
+               res.writeHead(200, 'Success', {'Content-type': 'text/html'});
+               res.write(data);
+               res.end();
+           })
+       })
+
+    }
+
+    sortProductName(req, res){
+        this.productModel.SortProductName().then(products => {
+            fs.readFile('./views/user/product.html', 'utf-8', async (err, data) => {
+                if (err) {
+                    console.log(err)
+                }
+                console.log(products)
+                let htmlproduct = "";
+                for (const product of products) {
+                    const index = products.indexOf(product);
+                    htmlproduct += `<li class="col-lg-4 col-md-6 col-sm-6 col-xs-6 "> 
+                                                  <div class="product product-style-3 equal-elem "> 
+                                                        <div class="product-thumnail"> 
+                                                            <a href="/productDetail?id=${product.productId}">
+                                                                <img src="/assets/images/products/${product.imageLink}" alt="">
+                                                         
+                                                            </a>
+                                                        </div>
+                                                        <div class="product-info">
+                                                                <a href="#" class="product-name"><span> ${product.productName} </span></a>
+                                        
+                                                                <div class="wrap-price"><span class="product-price">${product.productPrice} USD</span></div>
+                                                           <a href="#" class="product-name">Detail</a>
+                                                           <a href="#" class="btn add-to-cart">Add To Cart</a>
+                              
+                                                        </div>
+                                                    </div>
+                                                </li>`;
+
+                }
+                data = data.replace('{productList}', htmlproduct);
+                res.writeHead(200, 'Success', {'Content-type': 'text/html'});
+                res.write(data);
+                res.end();
+            })
+        })
+    }
+    sortProductASC(req, res){
+        this.productModel.SortProductAsc().then(products => {
+            fs.readFile('./views/user/product.html', 'utf-8', async (err, data) => {
+                if (err) {
+                    console.log(err)
+                }
+                let htmlproduct = "";
+                for (const product of products) {
+                    const index = products.indexOf(product);
+                    htmlproduct += `<li class="col-lg-4 col-md-6 col-sm-6 col-xs-6 "> 
+                                                  <div class="product product-style-3 equal-elem "> 
+                                                        <div class="product-thumnail"> 
+                                                            <a href="/productDetail?id=${product.productId}">
+                                                                <img src="/assets/images/products/${product.imageLink}" alt="">
+                                                         
+                                                            </a>
+                                                        </div>
+                                                        <div class="product-info">
+                                                                <a href="#" class="product-name"><span> ${product.productName} </span></a>
+                                        
+                                                                <div class="wrap-price"><span class="product-price">${product.productPrice} USD</span></div>
+                                                           <a href="#" class="product-name">Detail</a>
+                                                           <a href="#" class="btn add-to-cart">Add To Cart</a>
+                              
+                                                        </div>
+                                                    </div>
+                                                </li>`;
+
+                }
+                data = data.replace('{productList}', htmlproduct);
+                res.writeHead(200, 'Success', {'Content-type': 'text/html'});
+                res.write(data);
+                res.end();
+            })
+        })
+    }
+    sortProductDesc(req, res){
+        this.productModel.SortProductDesc().then(products => {
+            fs.readFile('./views/user/product.html', 'utf-8', async (err, data) => {
+                if (err) {
+                    console.log(err)
+                }
+                let htmlproduct = "";
+                for (const product of products) {
+                    const index = products.indexOf(product);
+                    htmlproduct += `<li class="col-lg-4 col-md-6 col-sm-6 col-xs-6 "> 
+                                                  <div class="product product-style-3 equal-elem "> 
+                                                        <div class="product-thumnail"> 
+                                                            <a href="/productDetail?id=${product.productId}">
+                                                                <img src="/assets/images/products/${product.imageLink}" alt="">
+                                                         
+                                                            </a>
+                                                        </div>
+                                                        <div class="product-info">
+                                                                <a href="#" class="product-name"><span> ${product.productName} </span></a>
+                                        
+                                                                <div class="wrap-price"><span class="product-price">${product.productPrice} USD</span></div>
+                                                           <a href="#" class="product-name">Detail</a>
+                                                           <a href="#" class="btn add-to-cart">Add To Cart</a>
+                              
+                                                        </div>
+                                                    </div>
+                                                </li>`;
+
+                }
+                data = data.replace('{productList}', htmlproduct);
+                res.writeHead(200, 'Success', {'Content-type': 'text/html'});
+                res.write(data);
+                res.end();
+            })
+        })
+    }
     showAllProductUser(req,res){
         this.productModel.getAllProductUser().then(products => {
             fs.readFile('./views/user/product.html', 'utf-8', async (err, data) => {
@@ -24,7 +198,7 @@ class ProductController {
                     htmlproduct += `<li class="col-lg-4 col-md-6 col-sm-6 col-xs-6 "> 
                                                   <div class="product product-style-3 equal-elem "> 
                                                         <div class="product-thumnail"> 
-                                                            <a href="#">
+                                                            <a href="/productDetail?id=${index + 1}">
                                                                 <img src="/assets/images/products/${product.imageLink}" alt="">
                                                          
                                                             </a>
@@ -32,8 +206,10 @@ class ProductController {
                                                         <div class="product-info">
                                                                 <a href="#" class="product-name"><span> ${product.productName} </span></a>
                                         
-                                                                <div class="wrap-price"><span class="product-price">${product.productPrice}</span></div>
+                                                                <div class="wrap-price"><span class="product-price">${product.productPrice} USD</span></div>
+                                                           <a href="#" class="product-name">Detail</a>
                                                            <a href="#" class="btn add-to-cart">Add To Cart</a>
+                              
                                                         </div>
                                                     </div>
                                                 </li>`;

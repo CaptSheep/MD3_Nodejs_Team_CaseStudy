@@ -3,7 +3,6 @@ const qs = require('qs')
 const User = require('../models/user')
 const cookie = require('cookie')
 
-
 class AuthController {
     constructor() {
         this.userModel = new User()

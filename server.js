@@ -81,6 +81,20 @@ handlers.search = (req, res)=>{
 handlers.product_user = (req, res)=>{
     productController.showAllProductUser(req,res);
 }
+handlers.sortProductDesc = (req,res)=>{
+    productController.sortProductDesc(req,res);
+}
+handlers.sortProductASC = (req,res)=>{
+    productController.sortProductASC(req,res);
+}
+handlers.sortProductName = (req,res)=>{
+    productController.sortProductName(req,res);
+}
+handlers.getDetailProduct = (req,res)=> {
+    //let queryUrl = url.parse(req.url).query;
+   // let id = qs.parse(queryUrl).id;
+    productController.getDetailProductById(req,res);
+}
 router = {
     '/product' : handlers.products,
     '/product/update' : handlers.product_update,
@@ -93,7 +107,11 @@ router = {
     '/category/update' : handlers.category_update,
     '/category/create' : handlers.category_create,
     '/product/search' : handlers.search,
-    '/userproduct':handlers.product_user
+    '/userproduct':handlers.product_user,
+    '/userproduct/sortdesc':handlers.sortProductDesc,
+    '/userproduct/sortasc':handlers.sortProductASC,
+    '/userproduct/sortname':handlers.sortProductName,
+    '/productDetail':handlers.getDetailProduct
 }
 
 let mimeTypes={

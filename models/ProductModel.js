@@ -4,9 +4,56 @@ class ProductModel{
     constructor() {
         this.conn = Database.connect();
     }
+    async getDetailProduct(id){
+        return new Promise((resolve, reject)=>{
+            let sqlSelect = `select * from product inner join productimage on product.productId = productimage.productId where product.productId = ${id}`;
+            this.conn.query(sqlSelect, (err, data)=>{
+                if(err){
+                    reject(err);
+                }
+                resolve(data);
+            })
+        })
+    }
+
     async getAllProductUser(){
         return new Promise((resolve, reject)=>{
             let sqlSelect = 'SELECT * FROM userProduct_view';
+            this.conn.query(sqlSelect, (err, data)=>{
+                if(err){
+                    reject(err);
+                }
+                resolve(data);
+            })
+        })
+    }
+    async SortProductDesc(){
+        return new Promise((resolve, reject)=>{
+            let sqlSelect = 'select * from userProduct_view order by productPrice DESC';
+            this.conn.query(sqlSelect, (err, data)=>{
+                if(err){
+                    reject(err);
+                }
+                resolve(data);
+            })
+        })
+    }
+
+    async SortProductAsc(){
+        return new Promise((resolve, reject)=>{
+            let sqlSelect = 'select * from userProduct_view order by productPrice ASC';
+            this.conn.query(sqlSelect, (err, data)=>{
+                if(err){
+                    reject(err);
+                }
+                resolve(data);
+            })
+        })
+    }
+
+    async SortProductName(){
+        return new Promise((resolve, reject)=>{
+            let sqlSelect = 'select * from userProduct_view order by productName';
             this.conn.query(sqlSelect, (err, data)=>{
                 if(err){
                     reject(err);
@@ -27,9 +74,9 @@ class ProductModel{
             })
         })
     }
-    async getProdcutById(id){
+    async getProductById(id){
         return new Promise((resolve, reject)=>{
-            let sqlSelect = `SELECT * FROM product where productStatus != 0 and productId = ${id}`;
+            let sqlSelect = `SELECT * FROM product where productId = ${id}`;
             this.conn.query(sqlSelect, (err, data)=>{
                 if(err){
                     reject(err);
