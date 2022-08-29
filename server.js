@@ -1,6 +1,6 @@
 const http = require('http');
 const url = require('url');
-const fs = require('fs')
+const fs = require('fs');
 const qs = require('qs');
 const AuthController = require('./controllers/authController')
 const ProductController = require('./controllers/ProductController');
@@ -125,6 +125,7 @@ let mimeTypes={
     'woff2':'font/woff2',
     'eot':'application/vnd.ms-fontobject'
 }
+
 const server = http.createServer(async(req, res)=>{
     let urlPath = url.parse(req.url).pathname;
     const filesDefences = urlPath.match(/\.js|\.css|\.png|\.svg|\.jpg|\.ttf|\.woff|\.woff2|\.eot/);
@@ -136,7 +137,6 @@ const server = http.createServer(async(req, res)=>{
         let chosenHandler = (typeof (router[urlPath]) !== 'undefined') ? router[urlPath] : handlers.notfound;
         chosenHandler(req, res);
     }
-
 })
 
 server.listen(8081, 'localhost', ()=>{
