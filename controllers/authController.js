@@ -25,17 +25,17 @@ class AuthController {
         })
     }
     async login(req, res) {
-        const buffer = [];
+     const buffer = [];
         for await (const chunk of req) {
             buffer.push(chunk);
         }
         const data = Buffer.concat(buffer).toString();
         const user = qs.parse(data);
-        let admin = '';
+        // let admin = ''
 
         let result = await this.userModel.checkAccount(user.email, user.password)
         result = JSON.parse(JSON.stringify(result))
-        // console.log(result);
+        console.log(result);
         if (result.length > 0) {
 
             let nameFile = Date.now();
@@ -58,8 +58,6 @@ class AuthController {
             let admin = false;
             res.setHeader('set-cookie', cookie.serialize('cookie-app', JSON.stringify(cookieLogin)));
 
-            result.forEach((item)=> {
-            console.log(result)
             result.forEach(item=> {
                 if (item.roleId === 1) {
                     admin = true;
@@ -72,16 +70,17 @@ class AuthController {
                 let register = '<li class="menu-item" ><a title="Register or Login" href="/login">Register</a></li>';
                 let loginParse = new dom.DOMParser().parseFromString(login,'text/xml');
                 let registerParse = new dom.DOMParser().parseFromString(register,'text/xml');
-                var loginOutput = parser.getElementsByTagName('<li class="menu-item" ><a title="Register or Login" href="/login">Login</a></li>')[0]
+                let loginOutput = loginParse.getElementsByTagName('<li class="menu-item" ><a title="Register or Login" href="/login">Login</a></li>')[0]
+                let registerOutput = registerParse.getElementsByTagName('<li class="menu-item" ><a title="Register or Login" href="/login">Login</a></li>')[0]
+        
                 fs.readFile('./views/auth/home.html','utf-8',(err,datahtml)=>{
                     if(err){
                         throw new Error(err.message)
                     }
                 datahtml = datahtml.replace(loginOutput,`${user.customerName}`)
-                datahtml = datahtml.replace('<li class="menu-item" ><a title="Register or Login" href="/login">Register</a></li>','')
-              res.writeHead(301, { Location: '/' },{'Content-Type': 'text/html'});
+                datahtml = datahtml.replace(registerOutput,"")
+                res.writeHead(301, { Location: '/' },{'Content-Type': 'text/html'});
                 res.write(datahtml);
-                res.writeHead(301, { Location: '/' });
                 return res.end();
                 })
                 
@@ -90,7 +89,7 @@ class AuthController {
             res.writeHead(301, { Location: '/login' });
             return res.end();
         }
-        })
+        
     }
 }
      async register(req, res) {
@@ -100,13 +99,15 @@ class AuthController {
         }
         const data = Buffer.concat(buffer).toString();
         const user = qs.parse(data);
-        if(this.validate.validate(req,res,user.customerEmail, user.customerName,user.customerPassword,user.customerAddress,user.customerPhone)){
-        await this.userModel.createAccount(user).then(result => {
-            res.writeHead(301, { Location: '/login' });
-            res.end();
-        }); 
-        
-        }
+        this.validate.validate(req,res,user.customerEmail, user.customerName,user.customerPassword,user.customerAddress,user.customerPhone).then((err, ress)=>{
+            if(err){
+                this.userModel.createAccount(user).then(result => {
+                    res.writeHead(301, { Location: '/login' });
+                    res.end();
+                });
+            }
+            
+        })
     }
     }
 

@@ -1,7 +1,6 @@
 const Database = require('./Database');
 // const authController = require('../controllers/authController')
 const qs = require('qs')
-const fs = require('fs');
 const isEmpty = require('is-empty');
 const fs = require("fs");
 
@@ -23,12 +22,7 @@ module.exports = class User {
       ];
     checkAccount(email, password) {
         return new Promise((resolve, reject) => {
-            let sql = `select Customer.customerEmail, Customer.customerPassword,RoleCustomerDetails.roleId from Customer  join RoleCustomerDetails on Customer.customerId =  RoleCustomerDetails.customerId where customerEmail = '${email}' and customerPassword = '${password}'`
-        });
-    }
-    checkAccount(email, password) {
-        return new Promise((resolve, reject) => {
-            let sql = `select customerEmail, customerPassword,roleId from Customer  join rolecustomerdetails r on customer.customerId = r.customerId where customerEmail = '${email}' and customerPassword = '${password}'`
+            let sql = `select customerEmail, customerPassword,roleId from Customer inner join RoleCustomerDetails on Customer.customerId = RoleCustomerDetails.customerId where customerEmail = '${email}' and customerPassword = '${password}'`
             this.conn.query(sql, (err, data) => {
                 if (err) {
                     reject(err);
@@ -38,11 +32,7 @@ module.exports = class User {
         })
     }
 
-    async createAccount(data) {
-        return new Promise((resolve, reject) => {
-            let sql = `CALL createAccount('${data.customerUserName}','${data.customerPassword}','${data.customerName}','${data.customerPhone}','${data.customerEmail}','${data.customerAddress}')`
-    createAccount(data) 
-        console.log(data)
+     createAccount(data) {
         return new Promise((resolve, reject) => {
             let sql = `call createAccount('${data.customerUserName}','${data.customerPassword}','${data.customerName}','${data.customerPhone}','${data.customerEmail}','${data.customerAddress}')`;
             this.conn.query(sql, (err, data) => {
@@ -54,7 +44,6 @@ module.exports = class User {
 
         })
     }
-)};
 
 
     async getAllUser() {
