@@ -105,6 +105,21 @@ handlers.user_role = (req, res)=>{
     let id = qs.parse(queryUrl).id;
     userController.changeRole(req, res, id);
 }
+handlers.product_user = (req, res)=>{
+    productController.showAllProductUser(req,res);
+}
+handlers.sortProductDesc = (req,res)=>{
+    productController.sortProductDesc(req,res);
+}
+handlers.sortProductASC = (req,res)=>{
+    productController.sortProductASC(req,res);
+}
+handlers.sortProductName = (req,res)=>{
+    productController.sortProductName(req,res);
+}
+handlers.getDetailProduct = (req,res)=> {
+    productController.getDetailProductById(req,res);
+}
 router = {
     '/product' : handlers.products,
     '/product/update' : handlers.product_update,
@@ -122,7 +137,12 @@ router = {
     '/user/update' : handlers.user_update,
     '/user/create' : handlers.user_create,
     '/user/delete' : handlers.user_delete,
-    '/user/role' : handlers.user_role
+    '/user/role' : handlers.user_role,
+    '/userproduct':handlers.product_user,
+    '/userproduct/sortdesc':handlers.sortProductDesc,
+    '/userproduct/sortasc':handlers.sortProductASC,
+    '/userproduct/sortname':handlers.sortProductName,
+    '/productDetail':handlers.getDetailProduct
 }
 
 
